@@ -214,7 +214,7 @@
     <div class="notice" id="notice" role="status"></div>
     <div class="row"><button id="toMenu" data-ko="목록으로 돌아가기">一覧に戻る</button></div>
     <div id="watchPoints" hidden>
-      <h2>이 동영상의 요점</h2>
+      <h2 data-ko="이 동영상의 요점">この動画の要点</h2>
       <p class="help" id="watchPointsHelp"></p>
       <div id="watchPointsBody"></div>
     </div>
@@ -476,26 +476,23 @@
     $('videoTitle').textContent = videoTitle(current);
     $('notice').textContent = '';
     if (player && player.getPlayerState) updateToggle(player.getPlayerState());
-    $('watchPoints').hidden = lang !== 'ko';
+    $('watchPoints').hidden = false;
     const hasSubtitles = lang === 'ko' && !!current.ko.subtitles;
     // 日本語の表示中も、日本語の文章を用意した動画は大きな字幕を動画の下に出す
     const subs = current.ko.subtitles;
     $('koSub').hidden = !(hasSubtitles || (lang === 'ja' && subs && subs[0][2]));
     $('koSub').textContent = '';
     lastSubtitle = null;
-    $('watchPointsHelp').textContent = hasSubtitles
-      ? '동영상 바로 아래에 한국어 자막이 나옵니다. 번역 자막이므로 동영상의 일본어 자막과 표시 시간이 조금 다를 수 있습니다.'
-      : '동영상은 일본어입니다. 아래의 요점을 먼저 읽어 주세요.';
+    $('watchPointsHelp').textContent = L('', '동영상 바로 아래에 한국어 자막이 나옵니다.');
+    $('watchPointsHelp').hidden = lang !== 'ko';
     const body = $('watchPointsBody');
     body.textContent = '';
-    if (lang === 'ko') {
-      current.ko.points.forEach((text) => {
-        const p = document.createElement('p');
-        p.className = 'point';
-        p.textContent = text;
-        body.appendChild(p);
-      });
-    }
+    videoPoints(current).forEach((text) => {
+      const p = document.createElement('p');
+      p.className = 'point';
+      p.textContent = text;
+      body.appendChild(p);
+    });
   }
 
   function updateToggle(state) {
