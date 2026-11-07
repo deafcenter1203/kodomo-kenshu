@@ -248,6 +248,10 @@
     <label for="note" data-ko="궁금한 점·관리자에게 확인하고 싶은 것(선택) <span class='help'>본인이나 다른 사람의 성범죄 이력에 관한 정보는 적지 말아 주세요.</span>">疑問点・管理者に確認したいこと（任意）
       <span class="help">ご自身や他の方の性犯罪歴に関わる情報は記入しないでください。</span></label>
     <textarea id="note" rows="3"></textarea>
+    <div id="signBox" hidden>
+      <label for="signName" data-ko="서명 <span class='help'>수강을 모두 마쳤다는 확인으로, 이름을 한 번 더 입력해 주세요.</span>">署名 <span class="help">すべて受講した確認として、もう一度ご自身の名前を入力してください。</span></label>
+      <input type="text" id="signName" autocomplete="off">
+    </div>
     <div class="notice" id="sendError" role="alert"></div>
     <p id="sendHelp" data-ko="어느 버튼을 눌러도 이 동영상의 수강 기록이 남습니다.">どちらのボタンを押しても、この動画の記録は送信されます。</p>
     <div class="row">
@@ -355,6 +359,7 @@
     if (view === 'quizView') renderQuiz();
     if (view === 'sendView') {
       videoState(current.no).note = $('note').value.trim();
+      videoState(current.no).sign = $('signName').value.trim();
       openSend();
     }
     if (view === 'finishView') openFinish();
@@ -765,6 +770,8 @@
     $('sendBtn').textContent = isLast ? L('送信して修了する', '수강을 마치고 수료하기') : L('送信して' + (current.no + 1) + '番へ進む', '수강을 마치고 ' + (current.no + 1) + '번으로 가기');
     $('sendBtn').disabled = $('sendStop').disabled = false;
     $('sendStop').hidden = $('sendHelp').hidden = isLast;
+    $('signBox').hidden = !isLast;
+    $('signName').value = state.sign || '';
     show('sendView');
   }
 
@@ -778,7 +785,8 @@
     fields[e.method] = user.method;
     fields[e.video] = String(video.no);
     fields[e.result] = state.answers.map((a) => a.no + ':' + a.choice + ':' + (a.correct ? 1 : 0)).join(',');
-    fields[e.note] = state.note || '';
+    // 署名は疑問点の欄に一緒に送り、メールの処理で取り出す
+    fields[e.note] = (state.sign ? '署名：' + state.sign + '\n' : '') + (state.note || '');
     return new Promise((resolve, reject) => {
       if (!navigator.onLine) return reject(new Error('offline'));
       const name = 'sendFrame' + Date.now();
@@ -820,6 +828,14 @@
     const video = current;
     const state = videoState(video.no);
     state.note = $('note').value.trim();
+    if (!$('signBox').hidden) {
+      state.sign = $('signName').value.trim();
+      if (!state.sign) {
+        saveProgress();
+        $('sendError').textContent = L('署名欄に、もう一度ご自身の名前を入力してください。', '서명란에 이름을 한 번 더 입력해 주세요.');
+        return;
+      }
+    }
     saveProgress();
     $('sendBtn').disabled = $('sendStop').disabled = true;
     $('sendError').textContent = '';
