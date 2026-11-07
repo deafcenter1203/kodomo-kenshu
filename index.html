@@ -68,7 +68,7 @@
 </style>
 </head>
 <body>
-<header data-ko="인정 NPO 법인 나고야 농 국제센터<br>【어린이 성폭력 방지법 연수】">認定NPO法人名古屋ろう国際センター<br>【こども性暴力防止法研修】</header>
+<header data-ko="【어린이 성폭력 방지법 연수】<br>인정 NPO 법인 나고야 농 국제센터">【こども性暴力防止法研修】<br>認定NPO法人名古屋ろう国際センター</header>
 <main>
   <div class="lang" role="group" aria-label="言語 / 언어">
     <button id="langJa" lang="ja">日本語</button>
@@ -193,6 +193,7 @@
 
   <section class="card" id="menuView" hidden>
     <h1 id="menuTitle"></h1>
+    <div class="status all" id="menuSaved" role="status" hidden></div>
     <div class="status" id="menuStatus" role="status"></div>
     <ul class="list" id="videoList"></ul>
     <div class="row"><button id="changeUser" data-ko="수강자 변경">受講者を変更する</button><button id="testReset" hidden>動作確認：この番号の進み具合を消す</button></div>
@@ -247,7 +248,11 @@
       <span class="help">ご自身や他の方の性犯罪歴に関わる情報は記入しないでください。</span></label>
     <textarea id="note" rows="3"></textarea>
     <div class="notice" id="sendError" role="alert"></div>
-    <div class="row"><button class="primary" id="sendBtn">記録して次へ</button></div>
+    <p id="sendHelp" data-ko="어느 버튼을 눌러도 이 동영상의 기록은 전송됩니다.">どちらのボタンを押しても、この動画の記録は送信されます。</p>
+    <div class="row">
+      <button class="primary" id="sendBtn"></button>
+      <button id="sendStop" data-ko="보내고 오늘은 끝내기">送信して今日は終わる</button>
+    </div>
   </section>
 
   <section class="card finish" id="finishView" hidden>
@@ -284,7 +289,7 @@
 
   let user = null, progress = null, current = null, player = null, tickTimer = null;
   let maxWatched = 0, started = false, lastSaveAt = 0, memoryStore = {};
-  let lang = 'ja', answered = null, lastSubtitle = null;
+  let lang = 'ja', answered = null, lastSubtitle = null, justSaved = false;
   const L = (ja, ko) => (lang === 'ko' ? ko : ja);
   const videoTitle = (video) => video.no + L('番 ', '번 ') + L(video.title, video.ko.title);
   const videoTime = (video) => L(video.time, video.time.replace('分', '분 ').replace('秒', '초'));
@@ -398,6 +403,8 @@
       user.name + ' さん（' + doneCount + ' / ' + CONFIG.videos.length + ' 本 受講済み）',
       user.name + ' 님(' + doneCount + ' / ' + CONFIG.videos.length + '개 수강 완료)'
     );
+    $('menuSaved').hidden = !justSaved;
+    $('menuSaved').textContent = L('送信しました。続きは、次に開いたときに受講できます。この画面は閉じて構いません。', '전송했습니다. 다음에 열면 이어서 수강할 수 있습니다. 이 화면은 닫아도 됩니다.');
     renderStatus();
     const list = $('videoList');
     list.textContent = '';
@@ -447,6 +454,7 @@
 
   /* ---------- 動画 ---------- */
   function openVideo(video) {
+    justSaved = false;
     current = video;
     const state = videoState(video.no);
     if (state.watched) return openQuiz();
@@ -734,8 +742,9 @@
     $('note').value = state.note || '';
     $('sendError').textContent = '';
     const isLast = current.no === CONFIG.videos[CONFIG.videos.length - 1].no;
-    $('sendBtn').textContent = isLast ? L('記録して修了する', '기록하고 수료하기') : L('記録して' + (current.no + 1) + '番へ進む', '기록하고 ' + (current.no + 1) + '번으로 가기');
-    $('sendBtn').disabled = false;
+    $('sendBtn').textContent = isLast ? L('送信して修了する', '보내고 수료하기') : L('送信して' + (current.no + 1) + '番へ進む', '보내고 ' + (current.no + 1) + '번으로 가기');
+    $('sendBtn').disabled = $('sendStop').disabled = false;
+    $('sendStop').hidden = $('sendHelp').hidden = isLast;
     show('sendView');
   }
 
@@ -783,26 +792,32 @@
     });
   }
 
-  $('sendBtn').addEventListener('click', () => {
+  $('sendBtn').addEventListener('click', () => sendRecord(true));
+  $('sendStop').addEventListener('click', () => sendRecord(false));
+
+  /** 記録を送信する。goNext が false なら次の動画を開かず、一覧に戻る。 */
+  function sendRecord(goNext) {
     const video = current;
     const state = videoState(video.no);
     state.note = $('note').value.trim();
     saveProgress();
-    $('sendBtn').disabled = true;
+    $('sendBtn').disabled = $('sendStop').disabled = true;
     $('sendError').textContent = '';
     postRecord(video, state)
       .then(() => {
         state.sent = true;
         saveProgress();
         const next = nextVideo();
-        if (next) openVideo(next);
-        else openFinish();
+        if (!next) return openFinish();
+        if (goNext) return openVideo(next);
+        justSaved = true;
+        openMenu();
       })
       .catch(() => {
         $('sendError').textContent = L('記録を送信できませんでした。インターネットの接続を確認して、もう一度押してください。', '기록을 보내지 못했습니다. 인터넷 연결을 확인하고 다시 눌러 주세요.');
-        $('sendBtn').disabled = false;
+        $('sendBtn').disabled = $('sendStop').disabled = false;
       });
-  });
+  }
 
   function openFinish() {
     const answers = CONFIG.videos.reduce((all, v) => all.concat(videoState(v.no).answers), []);
