@@ -52,6 +52,11 @@
   .status.all { border-color:var(--ok); color:var(--ok); }
   .status .detail { font-weight:400; color:var(--dark); margin-top:4px; }
   .test-tools { margin-top:12px; padding:12px; border:1px dashed var(--dark); border-radius:6px; }
+  .pics { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px; margin:12px 0 16px; padding:0; list-style:none; }
+  .pics li { background:var(--pale); border:1px solid var(--line); border-radius:8px; padding:10px 8px; text-align:center; font-weight:700; font-size:.95rem; line-height:1.45; }
+  .pics svg { display:block; width:100%; max-width:130px; height:auto; margin:0 auto 6px; }
+  .pics-note { font-weight:700; margin:-6px 0 16px; }
+  @media (max-width:480px) { .pics { grid-template-columns:1fr 1fr; } .pics li:last-child:nth-child(odd) { grid-column:1 / -1; } }
   [hidden] { display:none !important; }
 </style>
 </head>
@@ -61,10 +66,80 @@
 
   <section class="card" id="startView" hidden>
     <h1>なぜこの研修が必要なのですか</h1>
+    <ul class="pics">
+      <li>
+        <svg viewBox="0 0 120 90" aria-hidden="true">
+          <path d="M60 28 C60 18 46 14 41 23 C36 32 50 42 60 49 C70 42 84 32 79 23 C74 14 60 18 60 28 Z" fill="#E08787" transform="translate(0,-14)"/>
+          <circle cx="38" cy="50" r="11" fill="#F3C9A5"/><rect x="26" y="62" width="24" height="24" rx="10" fill="#0B5CAD"/>
+          <circle cx="82" cy="50" r="11" fill="#F3C9A5"/><rect x="70" y="62" width="24" height="24" rx="10" fill="#1E6B3A"/>
+        </svg>
+        こどもの<br>安心を守る
+      </li>
+      <li>
+        <svg viewBox="0 0 120 90" aria-hidden="true">
+          <rect x="22" y="12" width="76" height="72" rx="6" fill="#fff" stroke="#434343" stroke-width="3"/>
+          <rect x="22" y="12" width="76" height="22" rx="6" fill="#E08787"/>
+          <text x="60" y="29" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">2026年</text>
+          <text x="60" y="66" text-anchor="middle" font-size="24" font-weight="700" fill="#434343">12/25</text>
+        </svg>
+        2026年12月25日<br>法律が始まる
+      </li>
+      <li>
+        <svg viewBox="0 0 120 90" aria-hidden="true">
+          <circle cx="40" cy="26" r="13" fill="#F3C9A5"/><rect x="25" y="41" width="30" height="45" rx="11" fill="#434343"/>
+          <circle cx="82" cy="50" r="11" fill="#F3C9A5"/><rect x="70" y="62" width="24" height="24" rx="10" fill="#0B5CAD"/>
+          <rect x="62" y="6" width="44" height="28" rx="8" fill="#fff" stroke="#E08787" stroke-width="3"/>
+          <path d="M84 13 C84 9 78 8 76 11 C74 15 80 19 84 22 C88 19 94 15 92 11 C90 8 84 9 84 13 Z" fill="#E08787"/>
+        </svg>
+        職員が気付く<br>話を聞く
+      </li>
+    </ul>
     <p>こどもへの性暴力は、こどもの心身に長く深刻な影響を与え、人権を著しく侵害します。被害を打ち明けにくく、周りも気付きにくいという特徴があります。</p>
     <p>そこで、こどもを性暴力から守るための「こども性暴力防止法」が、2026年12月25日に施行されます。児童発達支援や放課後等デイサービスの事業者も対象で、安全を守る取り組みの一つとして、従事者への研修を行う必要があります。</p>
     <p>職員一人ひとりが、性暴力につながる行為を防ぎ、こどもの小さな変化に気付き、相談を受けたときに正しく対応できるようになることが、この研修の目的です。</p>
     <h1>受講を始める</h1>
+    <ul class="pics">
+      <li>
+        <svg viewBox="0 0 120 90" aria-hidden="true">
+          <rect x="16" y="16" width="88" height="24" rx="5" fill="#fff" stroke="#434343" stroke-width="3"/>
+          <text x="60" y="34" text-anchor="middle" font-size="16" font-weight="700" fill="#434343">039</text>
+          <rect x="16" y="50" width="88" height="24" rx="5" fill="#fff" stroke="#434343" stroke-width="3"/>
+          <text x="60" y="68" text-anchor="middle" font-size="15" font-weight="700" fill="#434343">氏名</text>
+        </svg>
+        ① 番号と氏名を入力
+      </li>
+      <li>
+        <svg viewBox="0 0 120 90" aria-hidden="true">
+          <rect x="14" y="12" width="92" height="56" rx="6" fill="#434343"/>
+          <path d="M51 26 L75 40 L51 54 Z" fill="#fff"/>
+          <rect x="14" y="76" width="92" height="7" rx="3.5" fill="#D9C4C4"/><rect x="14" y="76" width="56" height="7" rx="3.5" fill="#E08787"/>
+        </svg>
+        ② 動画を最後まで見る
+      </li>
+      <li>
+        <svg viewBox="0 0 120 90" aria-hidden="true">
+          <circle cx="36" cy="45" r="21" fill="none" stroke="#0B5CAD" stroke-width="8"/>
+          <path d="M70 26 L104 64 M104 26 L70 64" stroke="#A03232" stroke-width="9" stroke-linecap="round"/>
+        </svg>
+        ③ ○×テストに答える
+      </li>
+      <li>
+        <svg viewBox="0 0 120 90" aria-hidden="true">
+          <rect x="16" y="26" width="58" height="40" rx="4" fill="#fff" stroke="#434343" stroke-width="3"/>
+          <path d="M16 28 L45 50 L74 28" fill="none" stroke="#434343" stroke-width="3"/>
+          <path d="M80 46 H102 M92 36 L104 46 L92 56" fill="none" stroke="#E08787" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        ④ 記録を送る
+      </li>
+      <li>
+        <svg viewBox="0 0 120 90" aria-hidden="true">
+          <circle cx="60" cy="45" r="34" fill="#1E6B3A"/>
+          <path d="M43 46 L55 58 L78 33" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        ⑤ 8本終わったら修了
+      </li>
+    </ul>
+    <p class="pics-note">②③④を、1番から8番まで順番にくり返します。</p>
     <p>児童発達支援・放課後等デイサービスの職員向け研修です。<br>動画は全部で8本あります（合計 約1時間34分、確認テストは全24問）。動画を最後まで見ると確認テストが開き、テストが終わると次の動画に進めます。8番まで終わったら修了です。</p>
     <p><strong>途中でやめても、同じ端末・同じブラウザで開けば続きから受講できます。</strong>できるだけ同じ端末で受講してください。</p>
     <p>教材：こども家庭庁「こども性暴力防止法に関する研修動画・研修資料（従事者向け）」</p>
