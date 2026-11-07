@@ -157,7 +157,7 @@
           <path d="M16 28 L45 50 L74 28" fill="none" stroke="#434343" stroke-width="3"/>
           <path d="M80 46 H102 M92 36 L104 46 L92 56" fill="none" stroke="#E08787" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-        <span data-ko="④ 기록 보내기">④ 記録を送る</span>
+        <span data-ko="④ 수강 기록 남기기">④ 記録を送る</span>
       </li>
       <li>
         <svg viewBox="0 0 120 90" aria-hidden="true">
@@ -248,10 +248,10 @@
       <span class="help">ご自身や他の方の性犯罪歴に関わる情報は記入しないでください。</span></label>
     <textarea id="note" rows="3"></textarea>
     <div class="notice" id="sendError" role="alert"></div>
-    <p id="sendHelp" data-ko="어느 버튼을 눌러도 이 동영상의 기록은 전송됩니다.">どちらのボタンを押しても、この動画の記録は送信されます。</p>
+    <p id="sendHelp" data-ko="어느 버튼을 눌러도 이 동영상의 수강 기록이 남습니다.">どちらのボタンを押しても、この動画の記録は送信されます。</p>
     <div class="row">
       <button class="primary" id="sendBtn"></button>
-      <button id="sendStop" data-ko="보내고 오늘은 끝내기">送信して今日は終わる</button>
+      <button id="sendStop" data-ko="수강을 마치고 오늘은 끝내기">送信して今日は終わる</button>
     </div>
   </section>
 
@@ -404,7 +404,7 @@
       user.name + ' 님(' + doneCount + ' / ' + CONFIG.videos.length + '개 수강 완료)'
     );
     $('menuSaved').hidden = !justSaved;
-    $('menuSaved').textContent = L('送信しました。続きは、次に開いたときに受講できます。この画面は閉じて構いません。', '전송했습니다. 다음에 열면 이어서 수강할 수 있습니다. 이 화면은 닫아도 됩니다.');
+    $('menuSaved').textContent = L('送信しました。続きは、次に開いたときに受講できます。この画面は閉じて構いません。', '수강 기록을 남겼습니다. 다음에 열면 이어서 수강할 수 있습니다. 이 화면은 닫아도 됩니다.');
     renderStatus();
     const list = $('videoList');
     list.textContent = '';
@@ -742,7 +742,7 @@
     $('note').value = state.note || '';
     $('sendError').textContent = '';
     const isLast = current.no === CONFIG.videos[CONFIG.videos.length - 1].no;
-    $('sendBtn').textContent = isLast ? L('送信して修了する', '보내고 수료하기') : L('送信して' + (current.no + 1) + '番へ進む', '보내고 ' + (current.no + 1) + '번으로 가기');
+    $('sendBtn').textContent = isLast ? L('送信して修了する', '수강을 마치고 수료하기') : L('送信して' + (current.no + 1) + '番へ進む', '수강을 마치고 ' + (current.no + 1) + '번으로 가기');
     $('sendBtn').disabled = $('sendStop').disabled = false;
     $('sendStop').hidden = $('sendHelp').hidden = isLast;
     show('sendView');
@@ -814,7 +814,7 @@
         openMenu();
       })
       .catch(() => {
-        $('sendError').textContent = L('記録を送信できませんでした。インターネットの接続を確認して、もう一度押してください。', '기록을 보내지 못했습니다. 인터넷 연결을 확인하고 다시 눌러 주세요.');
+        $('sendError').textContent = L('記録を送信できませんでした。インターネットの接続を確認して、もう一度押してください。', '수강 기록을 남기지 못했습니다. 인터넷 연결을 확인하고 다시 눌러 주세요.');
         $('sendBtn').disabled = $('sendStop').disabled = false;
       });
   }
