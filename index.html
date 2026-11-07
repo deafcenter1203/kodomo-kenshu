@@ -239,7 +239,7 @@
       <button id="ansX"><span class="mark" aria-hidden="true">×</span><span data-ko="틀리다">まちがい</span></button>
     </div>
     <div class="result" id="qResult" role="status" hidden></div>
-    <div class="row"><button class="primary" id="qNext" hidden data-ko="다음">次へ</button></div>
+    <div class="row"><button id="qRetry" hidden data-ko="다시 답하기">もう一度答える</button><button class="primary" id="qNext" hidden data-ko="다음">次へ</button></div>
   </section>
 
   <section class="card" id="sendView" hidden>
@@ -291,7 +291,7 @@
 
   let user = null, progress = null, current = null, player = null, tickTimer = null;
   let maxWatched = 0, started = false, lastSaveAt = 0, memoryStore = {};
-  let lang = 'ja', answered = null, lastSubtitle = null, justSaved = false;
+  let lang = 'ja', answered = null, retrying = null, lastSubtitle = null, justSaved = false;
   const L = (ja, ko) => (lang === 'ko' ? ko : ja);
   const videoTitle = (video) => video.no + L('番 ', '번 ') + L(video.title, video.ko.title);
   const videoTime = (video) => L(video.time, video.time.replace('分', '분 ').replace('秒', '초'));
@@ -658,6 +658,7 @@
   function openQuiz() {
     stopPlayer();
     answered = null;
+    retrying = null;
     // 全問回答済みなら showQuestion が送信画面を開くので、先にテスト画面を出しておく
     show('quizView');
     renderQuiz();
@@ -673,6 +674,7 @@
       p.textContent = text;
       points.appendChild(p);
     });
+    if (retrying !== null) return renderQuestion(retrying);
     if (!answered) return showQuestion();
     renderQuestion(answered.index);
     renderResult();
@@ -692,6 +694,8 @@
     const index = state.answers.length;
     if (index >= current.questions.length) return openSend();
     answered = null;
+    retrying = null;
+    $('qRetry').hidden = true;
     renderQuestion(index);
     $('ansO').disabled = $('ansX').disabled = false;
     $('qResult').hidden = true;
@@ -700,11 +704,16 @@
 
   function answer(choice) {
     const state = videoState(current.no);
-    const index = state.answers.length;
+    // やり直しの回答は記録しない。得点は最初の回答で数える。
+    const firstTry = retrying === null;
+    const index = firstTry ? state.answers.length : retrying;
     const q = current.questions[index];
     const correct = choice === q.answer;
-    state.answers.push({ no: q.no, choice: choice, correct: correct });
-    saveProgress();
+    retrying = null;
+    if (firstTry) {
+      state.answers.push({ no: q.no, choice: choice, correct: correct });
+      saveProgress();
+    }
     $('ansO').disabled = $('ansX').disabled = true;
     answered = { index: index, correct: correct };
     renderResult();
@@ -729,10 +738,20 @@
       box.appendChild(body);
     }
     box.hidden = false;
+    $('qRetry').hidden = answered.correct;
   }
   $('ansO').addEventListener('click', () => answer('○'));
   $('ansX').addEventListener('click', () => answer('×'));
   $('qNext').addEventListener('click', showQuestion);
+  $('qRetry').addEventListener('click', () => {
+    retrying = answered.index;
+    answered = null;
+    $('qResult').hidden = true;
+    $('qRetry').hidden = true;
+    $('qNext').hidden = true;
+    $('ansO').disabled = $('ansX').disabled = false;
+    $('qText').scrollIntoView({ block: 'center' });
+  });
 
   /* ---------- 記録の送信 ---------- */
   function openSend() {
