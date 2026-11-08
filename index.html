@@ -61,6 +61,11 @@
   .pics li { background:var(--pale); border:1px solid var(--line); border-radius:8px; padding:10px 8px; text-align:center; font-weight:700; font-size:.95rem; line-height:1.45; }
   .pics svg { display:block; width:100%; max-width:130px; height:auto; margin:0 auto 6px; }
   .pics-note { font-weight:700; margin:-6px 0 16px; }
+  .freee-ex { background:#F4F4F4; border:1px solid #CFCFCF; border-radius:8px; padding:8px 12px; margin:4px 0 8px; }
+  .freee-ex p { margin:2px 0; }
+  .freee-cap { font-size:.85rem; color:#555; }
+  .freee-line { font-size:1.05rem; }
+  .freee-no { display:inline-block; border:3px solid var(--ng); border-radius:999px; padding:0 8px; font-weight:700; color:var(--ng); }
   .deadline { background:var(--pale); border:3px solid var(--ng); border-radius:10px; padding:12px 14px; margin:0 0 16px; font-weight:700; font-size:1.15rem; color:var(--ng); text-align:center; }
   .easy-list { margin:0 0 16px; padding-left:1.4em; }
   .easy-list li { margin-bottom:6px; }
@@ -137,10 +142,16 @@
     <ul class="pics">
       <li>
         <svg viewBox="0 0 120 90" aria-hidden="true">
-          <rect x="16" y="16" width="88" height="24" rx="5" fill="#fff" stroke="#434343" stroke-width="3"/>
-          <text x="60" y="34" text-anchor="middle" font-size="16" font-weight="700" fill="#434343" data-ko="예) 025">例）025</text>
-          <rect x="16" y="50" width="88" height="24" rx="5" fill="#fff" stroke="#434343" stroke-width="3"/>
-          <text x="60" y="68" text-anchor="middle" font-size="15" font-weight="700" fill="#434343" data-ko="이름">氏名</text>
+          <rect x="3" y="3" width="114" height="38" rx="4" fill="#F4F4F4" stroke="#9A9A9A" stroke-width="1.5"/>
+          <text x="60" y="17" text-anchor="middle" font-size="9" fill="#555">パレット／パート／</text>
+          <text x="30" y="34" text-anchor="middle" font-size="13" font-weight="700" fill="#434343">025</text>
+          <text x="78" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="#434343">佐藤 花子</text>
+          <ellipse cx="30" cy="29.5" rx="15" ry="9" fill="none" stroke="#A03232" stroke-width="2.5"/>
+          <path d="M30 40 V51 M25 46 L30 52 L35 46" fill="none" stroke="#A03232" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="6" y="55" width="48" height="27" rx="5" fill="#fff" stroke="#434343" stroke-width="2.5"/>
+          <text x="30" y="74" text-anchor="middle" font-size="15" font-weight="700" fill="#434343">025</text>
+          <rect x="62" y="55" width="52" height="27" rx="5" fill="#fff" stroke="#434343" stroke-width="2.5"/>
+          <text x="88" y="74" text-anchor="middle" font-size="13" font-weight="700" fill="#434343" data-ko="이름">氏名</text>
         </svg>
         <span data-ko="① 번호와 이름 입력">① 番号と氏名を入力</span>
       </li>
@@ -187,6 +198,11 @@
       <li data-ko="<strong>교재: </strong>일본 어린이가정청(こども家庭庁) 「어린이 성폭력 방지법에 관한 연수 동영상·연수 자료(직원용)」"><strong>教材：</strong>こども家庭庁「こども性暴力防止法に関する研修動画・研修資料（従事者向け）」</li>
     </ul>
     <label for="staffNo" data-ko="직원 번호 <span class='help'>フリー勤怠(출근·퇴근을 기록하는 앱)에 적혀 있는 번호입니다(3자리. 예: 025). <br><strong style='color:var(--ng)'>⚠ 번호가 틀리면 다른 사람의 기록이 되어 버립니다.</strong></span>">職員番号 <span class="help">フリー勤怠に書いてある番号です（3桁。例：025）。<br><strong style="color:var(--ng)">⚠ 番号を間違えると、別の人の記録になってしまいます。</strong></span></label>
+    <div class="freee-ex">
+      <p class="freee-cap" data-ko="예) フリー勤怠 화면">例）フリー勤怠の画面</p>
+      <p class="freee-line"><span data-ko="직원:">従業員：</span> パレット / パート / <span class="freee-no">025</span> 佐藤 花子</p>
+      <p class="freee-cap" data-ko="↑ 빨간 동그라미의 3자리 번호를 입력합니다.">↑ 赤い丸の3桁の番号を入力します。</p>
+    </div>
     <input type="text" id="staffNo" inputmode="numeric" maxlength="3" autocomplete="off">
     <label for="staffName" data-ko="이름 <span class='help'>한자·가타카나·로마자·한글 등, 무엇이든 괜찮습니다.</span>">氏名 <span class="help">漢字・カタカナ・ローマ字など、どれでもいいです。</span></label>
     <input type="text" id="staffName" autocomplete="off">
