@@ -364,7 +364,7 @@
     });
     ['job', 'method'].forEach((id) => {
       Array.from($(id).options).forEach((option) => {
-        if (option.value) option.textContent = L(option.value, OPTION_KO[option.value] || option.value);
+        if (option.value) option.textContent = '・' + L(option.value, OPTION_KO[option.value] || option.value);
       });
     });
     $('koCredit').hidden = lang !== 'ko';
@@ -403,7 +403,7 @@
   function addOption(select, value) {
     const option = document.createElement('option');
     option.value = value;
-    option.textContent = L(value, OPTION_KO[value] || value);
+    option.textContent = '・' + L(value, OPTION_KO[value] || value);
     select.appendChild(option);
   }
 
