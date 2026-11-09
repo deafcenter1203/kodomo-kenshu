@@ -70,7 +70,11 @@
   .easy-list { margin:0 0 16px; padding-left:1.4em; }
   .easy-list li { margin-bottom:6px; }
   @media (max-width:480px) { .pics { grid-template-columns:1fr 1fr; } .pics li:last-child:nth-child(odd) { grid-column:1 / -1; } }
-  .lang { display:flex; gap:8px; justify-content:center; padding:8px; background:#fff; margin:0; }
+  header { display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:8px; }
+  .hdr-title { grid-column:2; }
+  .lang { display:flex; gap:8px; justify-content:flex-end; margin:0; grid-column:3; }
+  .lang button { background:#fff; color:var(--dark); }
+  @media (max-width:640px) { header { grid-template-columns:1fr; } .hdr-side { display:none; } .hdr-title, .lang { grid-column:1; } .lang { justify-content:center; } .lang button { min-width:80px; padding:6px 10px; } }
   .lang button { min-width:96px; }
   .lang button[aria-pressed="true"] { background:var(--dark); color:#fff; }
   .ko-sub { background:#222; color:#fff; font-weight:700; font-size:1.1rem; line-height:1.6; padding:6px 12px; min-height:3.2em; text-align:center; }
@@ -80,11 +84,14 @@
 </style>
 </head>
 <body>
-<div class="lang" role="group" aria-label="言語 / 언어">
+<header>
+  <div class="hdr-side"></div>
+  <div class="hdr-title" data-ko="【어린이 성폭력 방지법 연수】<br>인정 NPO 법인 나고야 농 국제센터">【こども性暴力防止法研修】<br>認定NPO法人名古屋ろう国際センター</div>
+  <div class="lang" role="group" aria-label="言語 / 언어">
     <button id="langJa" lang="ja">日本語</button>
     <button id="langKo" lang="ko">한국어</button>
-</div>
-<header data-ko="【어린이 성폭력 방지법 연수】<br>인정 NPO 법인 나고야 농 국제센터">【こども性暴力防止法研修】<br>認定NPO法人名古屋ろう国際センター</header>
+  </div>
+</header>
 <main>
 
   <section class="card" id="startView" hidden>
