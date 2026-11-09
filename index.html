@@ -76,6 +76,9 @@
   .lang button { background:#fff; color:var(--dark); }
   @media (max-width:640px) { header { flex-direction:column; gap:8px; } .lang { justify-content:center; } .lang button { min-width:80px; padding:6px 10px; } }
   .lang button { min-width:96px; }
+  .speed { align-items:center; }
+  .speed button { min-width:72px; }
+  .rate[aria-pressed="true"] { background:var(--dark); color:#fff; }
   .lang button[aria-pressed="true"] { background:var(--dark); color:#fff; }
   .ko-sub { background:#222; color:#fff; font-weight:700; font-size:1.1rem; line-height:1.6; padding:6px 12px; min-height:3.2em; text-align:center; }
   @media (max-width:480px) { .ko-sub { font-size:1.25rem; line-height:1.5; min-height:3.75em; } }
@@ -240,6 +243,12 @@
     <div class="row">
       <button id="toggle" hidden>一時停止</button>
       <button id="back" hidden data-ko="10초 뒤로">10秒戻る</button>
+    </div>
+    <div class="row speed" id="speedRow" hidden role="group" aria-label="速さ">
+      <span data-ko="속도">速さ</span>
+      <button class="rate" data-rate="1" data-ko="보통">ふつう</button>
+      <button class="rate" data-rate="1.25">1.25倍</button>
+      <button class="rate" data-rate="1.5">1.5倍</button>
     </div>
     <div class="notice" id="notice" role="status"></div>
     <div class="row"><button id="toMenu" data-ko="목록으로 돌아가기">一覧に戻る</button></div>
@@ -588,13 +597,23 @@
       // 最初の再生のあとは、動画への直接操作を防ぐ
       $('shield').style.display = 'block';
       $('startHint').hidden = true;
-      $('toggle').hidden = $('back').hidden = false;
+      $('toggle').hidden = $('back').hidden = $('speedRow').hidden = false;
+      setRate(chosenRate);
     }
     // 公式の字幕が映像に入っているため、YouTubeの字幕は再生のたびに消す（閲覧者の設定で出ることがある）
     if (event.data === S.PLAYING) hideYouTubeCaptions();
     if (event.data === S.PAUSED) saveWatch();
     if (event.data === S.ENDED) onEnded();
   }
+
+  let chosenRate = 1;
+  function setRate(rate) {
+    chosenRate = rate;
+    if (player && player.setPlaybackRate) player.setPlaybackRate(rate);
+    document.querySelectorAll('.rate').forEach((b) => b.setAttribute('aria-pressed', String(Number(b.dataset.rate) === rate)));
+  }
+  document.querySelectorAll('.rate').forEach((b) => b.addEventListener('click', () => setRate(Number(b.dataset.rate))));
+  setRate(1);
 
   function hideYouTubeCaptions() {
     const off = () => {
@@ -629,10 +648,7 @@
     if (!player || !player.getCurrentTime) return;
     const position = player.getCurrentTime();
     const duration = player.getDuration();
-    if (player.getPlaybackRate() !== 1) {
-      player.setPlaybackRate(1);
-      $('notice').textContent = L('再生速度は変更できません。', '재생 속도는 바꿀 수 없습니다.');
-    }
+    if (player.getPlaybackRate() !== chosenRate) player.setPlaybackRate(chosenRate);
     if (position > maxWatched + GRACE_SECONDS) {
       rewind();
     } else if (position > maxWatched) {
