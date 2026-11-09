@@ -70,7 +70,7 @@
   .easy-list { margin:0 0 16px; padding-left:1.4em; }
   .easy-list li { margin-bottom:6px; }
   @media (max-width:480px) { .pics { grid-template-columns:1fr 1fr; } .pics li:last-child:nth-child(odd) { grid-column:1 / -1; } }
-  .lang { display:flex; gap:8px; justify-content:flex-end; margin-bottom:12px; }
+  .lang { display:flex; gap:8px; justify-content:center; padding:8px; background:#fff; margin:0; }
   .lang button { min-width:96px; }
   .lang button[aria-pressed="true"] { background:var(--dark); color:#fff; }
   .ko-sub { background:#222; color:#fff; font-weight:700; font-size:1.1rem; line-height:1.6; padding:6px 12px; min-height:3.2em; text-align:center; }
@@ -80,12 +80,12 @@
 </style>
 </head>
 <body>
-<header data-ko="【어린이 성폭력 방지법 연수】<br>인정 NPO 법인 나고야 농 국제센터">【こども性暴力防止法研修】<br>認定NPO法人名古屋ろう国際センター</header>
-<main>
-  <div class="lang" role="group" aria-label="言語 / 언어">
+<div class="lang" role="group" aria-label="言語 / 언어">
     <button id="langJa" lang="ja">日本語</button>
     <button id="langKo" lang="ko">한국어</button>
-  </div>
+</div>
+<header data-ko="【어린이 성폭력 방지법 연수】<br>인정 NPO 법인 나고야 농 국제센터">【こども性暴力防止法研修】<br>認定NPO法人名古屋ろう国際センター</header>
+<main>
 
   <section class="card" id="startView" hidden>
     <p class="deadline" data-ko="⏰ 마감: 2026년 11월 30일(월) 18:30까지">⏰ 締め切り：2026年11月30日（月）18:30まで</p>
