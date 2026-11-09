@@ -555,7 +555,7 @@
     holder.appendChild(target);
     player = new YT.Player(target, {
       videoId: current.id,
-      playerVars: { controls: 0, disablekb: 1, fs: 0, rel: 0, playsinline: 1, iv_load_policy: 3,
+      playerVars: { controls: 0, disablekb: 1, fs: 0, rel: 0, playsinline: 1, iv_load_policy: 3, cc_load_policy: 0,
                     hl: lang, start: Math.floor(maxWatched) },
       events: { onReady: onReady, onStateChange: onState, onError: onError },
     });
@@ -589,11 +589,20 @@
       $('shield').style.display = 'block';
       $('startHint').hidden = true;
       $('toggle').hidden = $('back').hidden = false;
-      // 公式の字幕が映像に入っているため、YouTubeの自動字幕は消しておく（閲覧者の設定で出ることがある）
-      player.unloadModule('captions');
     }
+    // 公式の字幕が映像に入っているため、YouTubeの字幕は再生のたびに消す（閲覧者の設定で出ることがある）
+    if (event.data === S.PLAYING) hideYouTubeCaptions();
     if (event.data === S.PAUSED) saveWatch();
     if (event.data === S.ENDED) onEnded();
+  }
+
+  function hideYouTubeCaptions() {
+    const off = () => {
+      try { player.setOption('captions', 'track', {}); } catch (e) {}
+      try { player.unloadModule('captions'); } catch (e) {}
+      try { player.unloadModule('cc'); } catch (e) {}
+    };
+    off(); setTimeout(off, 800); setTimeout(off, 2500);
   }
 
   function onEnded() {
